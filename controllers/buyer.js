@@ -118,10 +118,24 @@ let place_order = async function (req, res) {
   }
 };
 
+let test = async function (req, res) {
+  try {
+    res.json({
+      message: "Your order placed successfully",
+      status: "ok",
+      ok: true
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({ status: "error" });
+  }
+};
+
 module.exports = {
   add_product_in_cart: add_product_in_cart,
   remove_product_from_cart: remove_product_from_cart,
   get_cart_details: get_cart_details,
   update_cart_product_quantity: update_cart_product_quantity,
-  place_order: place_order
+  place_order: place_order,
+  test: test
 };
