@@ -15,6 +15,7 @@ router.post("/add_product_in_cart", buyer.add_product_in_cart);
 router.post("/remove_product_from_cart", buyer.remove_product_from_cart);
 router.post("/get_cart_details", buyer.get_cart_details);
 router.post("/place_order", buyer.place_order);
+router.get("/testing", buyer.test);
 router.post(
   "/update_cart_product_quantity",
   buyer.update_cart_product_quantity
