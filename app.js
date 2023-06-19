@@ -28,11 +28,6 @@ app.get("/test", async (req, res) => {
   // console.log(joker);
   res.send('<h1>Working Fine</h1>');
 });
-
- app.get("/test1", async (req, res) => {
-    // console.log(joker);
-    res.send('<h1>Working Fine</h1>');
-  });
   app.post("/testpost", async (req, res) => {
     // console.log(joker);
     res.send('<h1>Working Fine</h1>');
