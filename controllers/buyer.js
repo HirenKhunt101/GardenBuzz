@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const schema = require("./../database/database.schema");
 const mongo = require("./../database/database.service");
 const nodemailer = require("nodemailer");
+const { promises } = require("nodemailer/lib/xoauth2");
 const ProductDetail = schema.product_detail;
 const CartDetail = schema.cart_detail;
 
@@ -75,7 +76,7 @@ let get_cart_details = async function (req, res) {
     ]);
     res.json({
       data: response,
-      message: "Product Removed Successfully",
+      message: "Successfully Read Details!",
       status: "ok",
     });
   } catch (error) {
@@ -118,12 +119,37 @@ let place_order = async function (req, res) {
   }
 };
 
-let test = async function (req, res) {
+let read_product_detail = async function (req, res) {
+  let body = req.body;
+  let data = {};
+
   try {
+    // data.product_detail = await ProductDetail.findById(body.ProductId);
+    // data.cart_detail = await CartDetail.findOne({
+    //   UserId: body.UserId,
+    //   ProductId: body.ProductId
+    // })
+    if(body.UserId) {
+      let [product_detail, cart_detail] = await Promise.all([
+        ProductDetail.findById(body.ProductId),
+        CartDetail.findOne({
+          UserId: body.UserId,
+          ProductId: body.ProductId
+        })
+      ])
+      data.product_detail = product_detail;
+      data.cart_detail = cart_detail;
+    }
+    else {
+      let [product_detail] = await Promise.all([
+        ProductDetail.findById(body.ProductId),
+      ])
+      data.product_detail = product_detail;
+    }
+
     res.json({
-      message: "Your order placed successfully",
       status: "ok",
-      ok: true
+      data: data,
     });
   } catch (error) {
     console.log(error);
@@ -131,11 +157,12 @@ let test = async function (req, res) {
   }
 };
 
+
 module.exports = {
   add_product_in_cart: add_product_in_cart,
   remove_product_from_cart: remove_product_from_cart,
   get_cart_details: get_cart_details,
   update_cart_product_quantity: update_cart_product_quantity,
   place_order: place_order,
-  test: test
+  read_product_detail: read_product_detail
 };
